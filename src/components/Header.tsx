@@ -48,6 +48,7 @@ export const Header = () => {
               <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</Link>
               <a href="#quem-somos" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Quem Somos</a>
               <Link to="/servicos" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Serviços</Link>
+              <Link to="/especialidades" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Especialidades</Link>
               <a href="#missao" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
               <a href="#contato" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Contato</a>
@@ -70,6 +71,7 @@ export const Header = () => {
               <Link to="/" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</Link>
               <a href="#quem-somos" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Quem Somos</a>
               <Link to="/servicos" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Serviços</Link>
+              <Link to="/especialidades" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Especialidades</Link>
               <a href="#missao" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
               <a href="#contato" className="block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center">Contato</a>
