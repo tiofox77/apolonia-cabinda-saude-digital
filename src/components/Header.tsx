@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Menu, X, Phone, MapPin, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,18 +35,19 @@ export const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
               <img 
                 src="/lovable-uploads/0253370c-49c9-46f5-b2c1-444c8c2a12d7.png" 
                 alt="Clínica Apolonia" 
                 className="h-12 w-auto"
               />
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#inicio" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</a>
+              <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</Link>
               <a href="#quem-somos" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Quem Somos</a>
+              <Link to="/servicos" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Serviços</Link>
               <a href="#missao" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
               <a href="#contato" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Contato</a>
@@ -65,8 +67,9 @@ export const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200">
             <nav className="container mx-auto px-4 py-4 space-y-4">
-              <a href="#inicio" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</a>
+              <Link to="/" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</Link>
               <a href="#quem-somos" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Quem Somos</a>
+              <Link to="/servicos" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Serviços</Link>
               <a href="#missao" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
               <a href="#contato" className="block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center">Contato</a>

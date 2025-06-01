@@ -1,12 +1,13 @@
 
 import { Heart, Shield, Users, Award } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const HeroSection = () => {
   return (
     <section id="inicio" className="bg-gradient-to-br from-blue-50 to-sky-100 py-20">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="animate-fade-in">
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
               Cuidando da sua <span className="text-blue-600">saúde</span> com excelência
             </h1>
@@ -15,17 +16,20 @@ export const HeroSection = () => {
               de saúde e bem-estar físico e mental com profissionais qualificados e experientes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-lg font-semibold">
+              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 text-lg font-semibold hover:scale-105 hover:shadow-lg">
                 Agendar Consulta
               </button>
-              <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-600 hover:text-white transition-colors text-lg font-semibold">
+              <Link 
+                to="/servicos"
+                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300 text-lg font-semibold text-center hover:scale-105 hover:shadow-lg"
+              >
                 Nossos Serviços
-              </button>
+              </Link>
             </div>
           </div>
           
-          <div className="relative">
-            <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <div className="relative animate-fade-in">
+            <div className="bg-white rounded-2xl shadow-2xl p-8 hover:shadow-3xl transition-shadow duration-300">
               <img 
                 src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=800&h=600" 
                 alt="Equipe médica" 
@@ -34,7 +38,7 @@ export const HeroSection = () => {
             </div>
             
             {/* Floating cards */}
-            <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-4 border-l-4 border-blue-600">
+            <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-4 border-l-4 border-blue-600 hover:scale-105 transition-transform duration-300">
               <div className="flex items-center space-x-3">
                 <Heart className="text-blue-600" size={24} />
                 <div>
@@ -44,7 +48,7 @@ export const HeroSection = () => {
               </div>
             </div>
             
-            <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg p-4 border-l-4 border-sky-500">
+            <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg p-4 border-l-4 border-sky-500 hover:scale-105 transition-transform duration-300">
               <div className="flex items-center space-x-3">
                 <Shield className="text-sky-500" size={24} />
                 <div>
@@ -58,23 +62,23 @@ export const HeroSection = () => {
         
         {/* Stats section */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
-          <div className="text-center">
-            <Users className="text-blue-600 mx-auto mb-4" size={48} />
+          <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <Users className="text-blue-600 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" size={48} />
             <p className="text-3xl font-bold text-gray-800">500+</p>
             <p className="text-gray-600">Pacientes Atendidos</p>
           </div>
-          <div className="text-center">
-            <Heart className="text-blue-600 mx-auto mb-4" size={48} />
-            <p className="text-3xl font-bold text-gray-800">15+</p>
-            <p className="text-gray-600">Especialidades</p>
+          <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <Heart className="text-blue-600 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" size={48} />
+            <p className="text-3xl font-bold text-gray-800">19+</p>
+            <p className="text-gray-600">Serviços Oferecidos</p>
           </div>
-          <div className="text-center">
-            <Shield className="text-blue-600 mx-auto mb-4" size={48} />
+          <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <Shield className="text-blue-600 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" size={48} />
             <p className="text-3xl font-bold text-gray-800">10+</p>
             <p className="text-gray-600">Anos de Experiência</p>
           </div>
-          <div className="text-center">
-            <Award className="text-blue-600 mx-auto mb-4" size={48} />
+          <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <Award className="text-blue-600 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" size={48} />
             <p className="text-3xl font-bold text-gray-800">98%</p>
             <p className="text-gray-600">Satisfação dos Pacientes</p>
           </div>
