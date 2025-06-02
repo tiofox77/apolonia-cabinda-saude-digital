@@ -254,9 +254,9 @@ Mensagem: ${formData.message}`
                       <option value="Neurologia">Neurologia</option>
                       <option value="Clínica Geral">Clínica Geral</option>
                     </select>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
+              </>
             )}
 
             <div className="space-y-2">
