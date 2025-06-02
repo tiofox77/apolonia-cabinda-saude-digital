@@ -1,0 +1,29 @@
+
+{
+  "name": "Clínica Apolonia - Saúde Digital",
+  "short_name": "Apolonia Saúde",
+  "description": "Clínica Apolonia em Cabinda, Angola - Cuidados de saúde com excelência",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3a8a",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/lovable-uploads/0253370c-49c9-46f5-b2c1-444c8c2a12d7.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/0253370c-49c9-46f5-b2c1-444c8c2a12d7.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "health", "lifestyle"],
+  "lang": "pt",
+  "scope": "/",
+  "prefer_related_applications": false
+}
