@@ -1,6 +1,8 @@
-
 import { useState } from "react";
 import { Clock, Stethoscope, Heart, Activity, Eye, FileText, Pill, Bed, FlaskConical, UserCheck, Scissors, Briefcase, Zap, Dumbbell } from "lucide-react";
+import { useContactModal } from "@/hooks/useContactModal";
+import { ContactModal } from "./ContactModal";
+import { DetailsModal } from "./DetailsModal";
 
 const services = [
   {
@@ -171,6 +173,19 @@ export const ServicesList = () => {
   const [activeCategory, setActiveCategory] = useState("todos");
   const [searchTerm, setSearchTerm] = useState("");
   const [hoveredService, setHoveredService] = useState<number | null>(null);
+  
+  const {
+    isContactOpen,
+    isScheduleOpen,
+    isDetailsOpen,
+    selectedItem,
+    openContact,
+    closeContact,
+    openSchedule,
+    closeSchedule,
+    openDetails,
+    closeDetails,
+  } = useContactModal();
 
   const filteredServices = services.filter(service => {
     const matchesCategory = activeCategory === "todos" || service.category === activeCategory;
@@ -179,156 +194,219 @@ export const ServicesList = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const handleScheduleClick = (service: any) => {
+    const serviceItem = {
+      id: service.id,
+      name: service.name,
+      description: service.description,
+      category: service.category,
+      type: 'service' as const,
+      image: service.image
+    };
+    openSchedule(serviceItem);
+  };
+
+  const handleDetailsClick = (service: any) => {
+    const serviceItem = {
+      id: service.id,
+      name: service.name,
+      description: service.description,
+      category: service.category,
+      type: 'service' as const,
+      image: service.image
+    };
+    openDetails(serviceItem);
+  };
+
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 animate-fade-in">
-            Explore Nossos <span className="text-blue-600">Serviços</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-sky-400 mx-auto mb-8 animate-scale-in"></div>
-          
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto mb-12 animate-slide-up">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar serviço..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-8 py-4 rounded-2xl border-2 border-transparent bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-300 text-lg"
-              />
-              <div className="absolute inset-y-0 right-0 pr-6 flex items-center">
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                  <div className="w-3 h-3 border-2 border-white rounded-full"></div>
+    <>
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 animate-fade-in">
+              Explore Nossos <span className="text-blue-600">Serviços</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-sky-400 mx-auto mb-8 animate-scale-in"></div>
+            
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto mb-12 animate-slide-up">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar serviço..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-8 py-4 rounded-2xl border-2 border-transparent bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all duration-300 text-lg"
+                />
+                <div className="absolute inset-y-0 right-0 pr-6 flex items-center">
+                  <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                    <div className="w-3 h-3 border-2 border-white rounded-full"></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {categories.map((category, index) => (
-            <button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg transform ${
-                activeCategory === category.id
-                  ? `${category.color} text-white shadow-2xl scale-105`
-                  : "bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300"
-              }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredServices.map((service, index) => {
-            const IconComponent = service.icon;
-            return (
-              <div
-                key={service.id}
-                className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer transform hover:scale-105"
-                onMouseEnter={() => setHoveredService(service.id)}
-                onMouseLeave={() => setHoveredService(null)}
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            {categories.map((category, index) => (
+              <button
+                key={category.id}
+                onClick={() => setActiveCategory(category.id)}
+                className={`px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg transform ${
+                  activeCategory === category.id
+                    ? `${category.color} text-white shadow-2xl scale-105`
+                    : "bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300"
+                }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={service.image} 
-                    alt={service.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  {/* Floating Icon */}
-                  <div className="absolute top-4 right-4 p-3 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <IconComponent className="text-blue-600" size={24} />
+                {category.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Services Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {filteredServices.map((service, index) => {
+              const IconComponent = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  className="group relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer transform hover:scale-105"
+                  onMouseEnter={() => setHoveredService(service.id)}
+                  onMouseLeave={() => setHoveredService(null)}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {/* Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={service.image} 
+                      alt={service.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {/* Floating Icon */}
+                    <div className="absolute top-4 right-4 p-3 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <IconComponent className="text-blue-600" size={24} />
+                    </div>
                   </div>
-                </div>
-                
-                {/* Content */}
-                <div className="p-8">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                    {service.name}
-                  </h3>
                   
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-                  
-                  {/* Action Area */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-blue-600 font-semibold text-sm group-hover:underline transition-all duration-300">
-                      Saiba mais
-                    </span>
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
-                      <div className="w-4 h-4 border-2 border-blue-600 group-hover:border-white rounded-full transform group-hover:rotate-45 transition-all duration-300"></div>
+                  {/* Content */}
+                  <div className="p-8">
+                    <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                      {service.name}
+                    </h3>
+                    
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      {service.description}
+                    </p>
+                    
+                    {/* Action Area */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <button 
+                        onClick={() => handleDetailsClick(service)}
+                        className="text-blue-600 font-semibold text-sm hover:underline transition-all duration-300"
+                      >
+                        Saiba mais
+                      </button>
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
+                        <div className="w-4 h-4 border-2 border-blue-600 group-hover:border-white rounded-full transform group-hover:rotate-45 transition-all duration-300"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Hover Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-blue-600/95 to-sky-600/95 flex items-center justify-center transition-all duration-500 ${
+                    hoveredService === service.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}>
+                    <div className="text-center text-white p-6">
+                      <IconComponent size={48} className="mx-auto mb-4" />
+                      <h4 className="text-xl font-bold mb-2">{service.name}</h4>
+                      <p className="text-sm opacity-90 mb-4">{service.description}</p>
+                      <div className="space-y-2">
+                        <button 
+                          onClick={() => handleScheduleClick(service)}
+                          className="w-full bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                        >
+                          Agendar Consulta
+                        </button>
+                        <button 
+                          onClick={() => handleDetailsClick(service)}
+                          className="w-full border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+                        >
+                          Ver Detalhes
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Hover Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-blue-600/95 to-sky-600/95 flex items-center justify-center transition-all duration-500 ${
-                  hoveredService === service.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                }`}>
-                  <div className="text-center text-white p-6">
-                    <IconComponent size={48} className="mx-auto mb-4" />
-                    <h4 className="text-xl font-bold mb-2">{service.name}</h4>
-                    <p className="text-sm opacity-90 mb-4">{service.description}</p>
-                    <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                      Agendar Consulta
-                    </button>
-                  </div>
+          {filteredServices.length === 0 && (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FileText className="text-gray-400" size={32} />
+              </div>
+              <p className="text-gray-500 text-xl">Nenhum serviço encontrado para "{searchTerm}"</p>
+              <p className="text-gray-400 mt-2">Tente buscar por outro termo</p>
+            </div>
+          )}
+
+          {/* Enhanced Call to Action */}
+          <div className="text-center">
+            <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-sky-600 rounded-3xl p-16 text-white overflow-hidden">
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full"></div>
+                <div className="absolute top-20 right-20 w-16 h-16 border-2 border-white rounded-full"></div>
+                <div className="absolute bottom-10 left-1/3 w-12 h-12 border-2 border-white rounded-full"></div>
+              </div>
+              
+              <div className="relative z-10">
+                <h3 className="text-4xl font-bold mb-6">Precisa de atendimento?</h3>
+                <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
+                  Entre em contato conosco para agendar sua consulta ou tirar dúvidas. 
+                  Estamos aqui para cuidar da sua saúde com excelência.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                  <button className="bg-white text-blue-600 px-10 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 text-lg font-bold shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Agendar Consulta
+                  </button>
+                  <button className="border-2 border-white text-white px-10 py-4 rounded-2xl hover:bg-white hover:text-blue-600 transition-all duration-300 text-lg font-bold hover:shadow-xl transform hover:scale-105">
+                    Entrar em Contato
+                  </button>
                 </div>
               </div>
-            );
-          })}
-        </div>
-
-        {filteredServices.length === 0 && (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FileText className="text-gray-400" size={32} />
-            </div>
-            <p className="text-gray-500 text-xl">Nenhum serviço encontrado para "{searchTerm}"</p>
-            <p className="text-gray-400 mt-2">Tente buscar por outro termo</p>
-          </div>
-        )}
-
-        {/* Enhanced Call to Action */}
-        <div className="text-center">
-          <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-sky-600 rounded-3xl p-16 text-white overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full"></div>
-              <div className="absolute top-20 right-20 w-16 h-16 border-2 border-white rounded-full"></div>
-              <div className="absolute bottom-10 left-1/3 w-12 h-12 border-2 border-white rounded-full"></div>
-            </div>
-            
-            <div className="relative z-10">
-              <h3 className="text-4xl font-bold mb-6">Precisa de atendimento?</h3>
-              <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-                Entre em contato conosco para agendar sua consulta ou tirar dúvidas. 
-                Estamos aqui para cuidar da sua saúde com excelência.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <button className="bg-white text-blue-600 px-10 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 text-lg font-bold shadow-lg hover:shadow-xl transform hover:scale-105">
-                  Agendar Consulta
-                </button>
-                <button className="border-2 border-white text-white px-10 py-4 rounded-2xl hover:bg-white hover:text-blue-600 transition-all duration-300 text-lg font-bold hover:shadow-xl transform hover:scale-105">
-                  Entrar em Contato
-                </button>
-              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Modals */}
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={closeContact}
+        type="contact"
+        selectedItem={selectedItem}
+      />
+      <ContactModal
+        isOpen={isScheduleOpen}
+        onClose={closeSchedule}
+        type="schedule"
+        selectedItem={selectedItem}
+      />
+      <DetailsModal
+        isOpen={isDetailsOpen}
+        onClose={closeDetails}
+        item={selectedItem}
+        onSchedule={() => {
+          closeDetails();
+          openSchedule(selectedItem);
+        }}
+      />
+    </>
   );
 };

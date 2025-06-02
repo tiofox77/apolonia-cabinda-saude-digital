@@ -6,15 +6,24 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, User, Phone, Mail, MessageSquare } from "lucide-react";
+import { Calendar, Clock, User, Phone, Mail, MessageSquare, Heart } from "lucide-react";
+
+interface SelectedItem {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  type: 'service' | 'specialty';
+}
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
   type: "contact" | "schedule";
+  selectedItem?: SelectedItem | null;
 }
 
-export const ContactModal = ({ isOpen, onClose, type }: ContactModalProps) => {
+export const ContactModal = ({ isOpen, onClose, type, selectedItem }: ContactModalProps) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,7 +33,7 @@ export const ContactModal = ({ isOpen, onClose, type }: ContactModalProps) => {
     message: "",
     date: "",
     time: "",
-    specialty: ""
+    specialty: selectedItem?.name || ""
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -40,13 +49,18 @@ export const ContactModal = ({ isOpen, onClose, type }: ContactModalProps) => {
     setIsLoading(true);
 
     try {
-      // Simulating email send - In a real app, you'd use a backend service
       const emailData = {
         to: "carlosfox1782@gmail.com",
-        subject: type === "schedule" ? "Nova Solicitação de Agendamento - Clínica Apolonia" : "Nova Mensagem de Contato - Clínica Apolonia",
+        subject: type === "schedule" 
+          ? `Nova Solicitação de Agendamento${selectedItem ? ` - ${selectedItem.name}` : ""} - Clínica Apolonia`
+          : "Nova Mensagem de Contato - Clínica Apolonia",
         body: type === "schedule" ? 
           `Nova solicitação de agendamento:
           
+${selectedItem ? `Serviço/Especialidade: ${selectedItem.name}` : ''}
+${selectedItem ? `Categoria: ${selectedItem.category}` : ''}
+${selectedItem ? `Tipo: ${selectedItem.type === 'service' ? 'Serviço' : 'Especialidade'}` : ''}
+
 Nome: ${formData.name}
 Email: ${formData.email}
 Telefone: ${formData.phone}
@@ -62,20 +76,17 @@ Telefone: ${formData.phone}
 Mensagem: ${formData.message}`
       };
 
-      // Here you would integrate with your email service (like EmailJS, Supabase, etc.)
       console.log("Email data to send:", emailData);
       
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       toast({
         title: "Sucesso!",
         description: type === "schedule" ? 
-          "Sua solicitação de agendamento foi enviada com sucesso!" : 
+          `Sua solicitação de agendamento${selectedItem ? ` para ${selectedItem.name}` : ''} foi enviada com sucesso!` : 
           "Sua mensagem foi enviada com sucesso!",
       });
 
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -83,7 +94,7 @@ Mensagem: ${formData.message}`
         message: "",
         date: "",
         time: "",
-        specialty: ""
+        specialty: selectedItem?.name || ""
       });
 
       onClose();
@@ -109,7 +120,7 @@ Mensagem: ${formData.message}`
             {isScheduleForm ? (
               <>
                 <Calendar className="h-5 w-5" />
-                Agendar Consulta
+                Agendar {selectedItem ? selectedItem.name : 'Consulta'}
               </>
             ) : (
               <>
@@ -118,6 +129,15 @@ Mensagem: ${formData.message}`
               </>
             )}
           </DialogTitle>
+          {selectedItem && (
+            <div className="bg-blue-50 p-3 rounded-lg mt-2">
+              <div className="flex items-center gap-2 text-blue-800">
+                <Heart className="h-4 w-4" />
+                <span className="font-medium">{selectedItem.name}</span>
+              </div>
+              <p className="text-blue-600 text-sm mt-1">{selectedItem.description}</p>
+            </div>
+          )}
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -213,28 +233,30 @@ Mensagem: ${formData.message}`
                   </select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="specialty">Especialidade</Label>
-                  <select
-                    id="specialty"
-                    name="specialty"
-                    value={formData.specialty}
-                    onChange={handleInputChange}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    required
-                  >
-                    <option value="">Selecione uma especialidade</option>
-                    <option value="Cardiologia">Cardiologia</option>
-                    <option value="Dermatologia">Dermatologia</option>
-                    <option value="Ginecologia">Ginecologia</option>
-                    <option value="Pediatria">Pediatria</option>
-                    <option value="Ortopedia">Ortopedia</option>
-                    <option value="Oftalmologia">Oftalmologia</option>
-                    <option value="Neurologia">Neurologia</option>
-                    <option value="Clínica Geral">Clínica Geral</option>
-                  </select>
+                {!selectedItem && (
+                  <div className="space-y-2">
+                    <Label htmlFor="specialty">Especialidade</Label>
+                    <select
+                      id="specialty"
+                      name="specialty"
+                      value={formData.specialty}
+                      onChange={handleInputChange}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      required
+                    >
+                      <option value="">Selecione uma especialidade</option>
+                      <option value="Cardiologia">Cardiologia</option>
+                      <option value="Dermatologia">Dermatologia</option>
+                      <option value="Ginecologia">Ginecologia</option>
+                      <option value="Pediatria">Pediatria</option>
+                      <option value="Ortopedia">Ortopedia</option>
+                      <option value="Oftalmologia">Oftalmologia</option>
+                      <option value="Neurologia">Neurologia</option>
+                      <option value="Clínica Geral">Clínica Geral</option>
+                    </select>
+                  )}
                 </div>
-              </>
+              )}
             )}
 
             <div className="space-y-2">
