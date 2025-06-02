@@ -2,9 +2,31 @@
 import { useState } from "react";
 import { Menu, X, Phone, MapPin, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ContactModal } from "./ContactModal";
+import { useContactModal } from "@/hooks/useContactModal";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {
+    isContactOpen,
+    isScheduleOpen,
+    openContact,
+    closeContact,
+    openSchedule,
+    closeSchedule,
+  } = useContactModal();
+
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    openContact();
+    setIsMenuOpen(false);
+  };
+
+  const handleScheduleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    openSchedule();
+    setIsMenuOpen(false);
+  };
 
   return (
     <>
@@ -22,9 +44,17 @@ export const Header = () => {
                 <span>Cabinda, Angola</span>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Clock size={14} />
-              <span>Seg-Sex: 7h-18h | Sáb: 7h-13h</span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <Clock size={14} />
+                <span>Seg-Sex: 7h-18h | Sáb: 7h-13h</span>
+              </div>
+              <button
+                onClick={handleScheduleClick}
+                className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs transition-colors"
+              >
+                Agendar
+              </button>
             </div>
           </div>
         </div>
@@ -51,7 +81,18 @@ export const Header = () => {
               <Link to="/especialidades" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Especialidades</Link>
               <a href="#missao" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
-              <a href="#contato" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">Contato</a>
+              <button 
+                onClick={handleScheduleClick}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium mr-2"
+              >
+                Agendar
+              </button>
+              <button 
+                onClick={handleContactClick}
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                Contato
+              </button>
             </nav>
 
             {/* Mobile menu button */}
@@ -74,11 +115,34 @@ export const Header = () => {
               <Link to="/especialidades" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Especialidades</Link>
               <a href="#missao" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Missão & Visão</a>
               <a href="#cultura" className="block text-gray-700 hover:text-blue-600 transition-colors font-medium">Atendimento</a>
-              <a href="#contato" className="block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center">Contato</a>
+              <button 
+                onClick={handleScheduleClick}
+                className="block w-full text-left bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center mb-2"
+              >
+                Agendar
+              </button>
+              <button 
+                onClick={handleContactClick}
+                className="block w-full text-left bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium text-center"
+              >
+                Contato
+              </button>
             </nav>
           </div>
         )}
       </header>
+
+      {/* Modals */}
+      <ContactModal
+        isOpen={isContactOpen}
+        onClose={closeContact}
+        type="contact"
+      />
+      <ContactModal
+        isOpen={isScheduleOpen}
+        onClose={closeSchedule}
+        type="schedule"
+      />
     </>
   );
 };
