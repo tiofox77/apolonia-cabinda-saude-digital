@@ -13,6 +13,14 @@ export const Footer = () => {
     closeSchedule,
   } = useContactModal();
 
+  const handleScheduleClick = () => {
+    openSchedule();
+  };
+
+  const handleContactClick = () => {
+    openContact();
+  };
+
   return (
     <>
       <footer id="contato" className="bg-gray-900 text-white">
@@ -64,13 +72,13 @@ export const Footer = () => {
                 </div>
                 <div className="mt-6 space-y-3">
                   <button
-                    onClick={openSchedule}
+                    onClick={handleScheduleClick}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
                   >
                     Agendar Consulta
                   </button>
                   <button
-                    onClick={openContact}
+                    onClick={handleContactClick}
                     className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
                   >
                     Entre em Contato
